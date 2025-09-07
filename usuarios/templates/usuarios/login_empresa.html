@@ -1,37 +1,17 @@
 {% load static %}
-<!--HU6 — Login de empresa
-Como usuario PYME registrado
-quiero iniciar sesión en la plataforma
-para acceder a mi información y dashboard.
-Criterios de aceptación
-• Dado que accedo a /login/, veo un formulario con email y contraseña.
-• Cuando ingreso credenciales válidas, me redirige al dashboard.
-• Si las credenciales son inválidas, se muestra un mensaje de error.
---->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <title>Login de Empresa</title>
-    <link rel="stylesheet" href="{% static 'usuarios/css/login.css' %}">
+  <meta charset="UTF-8">
+  <title>Login Empresa</title>
+  <link rel="stylesheet" href="{% static 'usuarios/css/login.css' %}">
 </head>
 <body>
-    <h1>Login</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="username">Correo electrónico:</label>
-        <input type="text" id="username" name="username" required>
-        
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required>
-        
-        <button type="submit">Iniciar Sesión</button>
-    </form>
-    
-    <p>¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
-
-    {% if error_message %}
-        <p style="color: red;">{{ error_message }}</p>
-    {% endif %}
+  <div class="login-box">
+    <h2>Login Empresa</h2>
+    <input type="text" placeholder="Usuario">
+    <input type="password" placeholder="Contraseña">
+    <input type="button" value="Entrar" onclick="window.location.href='/inicio/'">
+  </div>
 </body>
 </html>
