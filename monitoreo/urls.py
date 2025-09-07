@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from dispositivos.views import inicio
 from dispositivos import views
-from dispositivos.views import eliminar_dispositivo, editar_dispositivo
+from usuarios import views as usuario_views
 
 
 urlpatterns = [
@@ -27,6 +27,7 @@ urlpatterns = [
     path('panel/', views.panel_dispositivos, name='panel_dispositivos'),
     path('dispositivos/crear/', views.crear_dispositivos, name='crear_dispositivos'),
     path('dispositivos/listar_dispositivos/', views.listar_dispositivos, name='listar_dispositivos'),
-    path('dispositivos/eliminar/<int:dispositivo_id>/', views.eliminar_dispositivo, name='eliminar_dispositivo')
+    path('dispositivos/eliminar/<int:dispositivo_id>/', views.eliminar_dispositivo, name='eliminar_dispositivo'),
+    path('usuarios/registro/', usuario_views.registro_empresa, name='registro_empresa'),
 
 ]
