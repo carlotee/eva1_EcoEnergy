@@ -29,5 +29,5 @@ urlpatterns = [
     path('dispositivos/listar_dispositivos/', views.listar_dispositivos, name='listar_dispositivos'),
     path('dispositivos/eliminar/<int:dispositivo_id>/', views.eliminar_dispositivo, name='eliminar_dispositivo'),
     path('usuarios/registro/', usuario_views.registro_empresa, name='registro_empresa'),
-
+    path('usuarios/login_empresa/', usuario_views.login_empresa, name='login_empresa'),
 ]
