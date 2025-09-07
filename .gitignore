@@ -1,3 +1,4 @@
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -38,3 +39,7 @@ Thumbs.db
 
 # IDEs
 .idea/
+__pycache__/
+*.pyc
+*.pyo
+

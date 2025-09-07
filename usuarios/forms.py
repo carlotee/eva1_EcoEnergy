@@ -19,3 +19,9 @@ class RegistroEmpresaForm(forms.ModelForm):
             user.save()
             Empresa.objects.create(usuario=user, nombre=self.cleaned_data['nombre_empresa'])
         return user
+
+from django import forms
+
+class LoginEmpresaForm(forms.Form):
+    email = forms.EmailField(label='Correo electrónico')
+    password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
