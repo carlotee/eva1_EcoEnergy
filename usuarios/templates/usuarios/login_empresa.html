@@ -7,6 +7,7 @@ Criterios de aceptación
 •	Cuando ingreso credenciales válidas, me redirige al dashboard.
 •	Si las credenciales son inválidas, se muestra un mensaje de error.
 --->
+<link rel="stylesheet" href="{% static 'usuarios/css/login.css' %}">
 <h1>Login</h1>
 <form method="post">
     {% csrf_token %}
