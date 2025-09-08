@@ -7,7 +7,7 @@ from .models import Dispositivo
 
 def inicio(request):
     contexto = {"nombre": "hombre araña"}
-    return render(request,"dispositivos/inicio.html", contexto)
+    return render(request,"dispositivos/inicio.html",contexto)
 
 def panel_dispositivos(request):
     dispositivos = [
