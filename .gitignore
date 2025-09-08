@@ -1,2 +1,44 @@
-*.pyc
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+*.sqlite3
+
+# Static and media files
+/static/
+media/
+
+# VS Code
+.vscode/
+
+# MacOS / Windows system files
+.DS_Store
+Thumbs.db
+
+# Migrations (optional to ignore if you want to generate them per branch)
+**/migrations/*.pyc
+**/migrations/__pycache__/
+# Uncomment the next line ONLY if you want to ignore migration files entirely
+# **/migrations/*.py
+
+# IDEs
+.idea/
+
+__pycache__/
+*.pyc
+*.pyo

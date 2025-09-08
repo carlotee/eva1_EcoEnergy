@@ -13,18 +13,12 @@ class LoginEmpresaForm(forms.Form):
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
 
 def login_empresa(request):
-    error_message = None
-
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        # Opcional: puedes capturar los datos si quieres
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+        # No autenticamos. Solo redirigimos directamente.
+        return redirect('inicio')  # ← Asegúrate de tener esta vista registrada con name='inicio'
 
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # Cambia 'home' por la vista a la que deseas redirigir
-        else:
-            error_message = "Credenciales incorrectas. Inténtalo de nuevo."
-
-    return render(request, 'usuarios/login_empresa.html', {'error_message': error_message})
+    return render(request, 'usuarios/login_empresa.html')
