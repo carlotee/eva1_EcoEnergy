@@ -4,15 +4,12 @@ from django import forms
 from django.contrib.auth.models import User
 from .forms import RegistroEmpresaForm
 # Create your views here.
-def login(request):
-    return render(request, 'usuarios/login.html')
 
 def registro(request):
     return render(request, 'usuarios/registro_empresa.html')
 
-def contraseña(request):
-    return render(request, 'usuarios/contraseña.html')
-
+def contrasena(request):
+    return render(request, 'usuarios/contrasena.html')
 
 def registro_empresa(request):
     if request.method == 'GET' and 'nombre' in request.GET:
