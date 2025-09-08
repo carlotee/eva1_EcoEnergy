@@ -28,5 +28,5 @@ urlpatterns = [
     path('dispositivos/crear/', views.crear_dispositivos, name='crear_dispositivos'),
     path('dispositivos/listar_dispositivos/', views.listar_dispositivos, name='listar_dispositivos'),
     path('dispositivos/eliminar/<int:dispositivo_id>/', views.eliminar_dispositivo, name='eliminar_dispositivo'),
-    path('usuarios/contraseña/', usuarios_views.contraseña, name='contraseña'),
+    path('usuarios/contrasena/', usuarios_views.contrasena, name='contrasena'),
 ]
