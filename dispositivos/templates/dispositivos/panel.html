@@ -1,27 +1,98 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Panel de dispositivos</title>
-</head>
-<body>
-    <h1>Panel de dispositivos</h1>
+{% extends "dispositivos/base.html" %}
 
-    <p>Consumo máximo permitido: {{ consumo_maximo }} W</p>
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="my-4">Dashboard</h1>
+    </div>
+</div>
 
-    <ul>
-        {% for dispositivo in dispositivos %}
-            {% if dispositivo.consumo <= consumo_maximo %}
-                <li style="color: green;">
-                    ● {{ dispositivo.nombre }} - {{ dispositivo.consumo }} W - Correcto
-                </li>
-            {% else %}
-                <li style="color: red;">
-                    ● {{ dispositivo.nombre }} - {{ dispositivo.consumo }} W - Exceso
-                </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-    <a href="/">Volver al inicio</a>
-</body>
-</html>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Dispositivos por Categoría</h5>
+                <ul class="list-group list-group-flush">
+                    {% for item in dispositivos_por_categoria %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ item.nombre }}
+                            <span class="badge bg-primary rounded-pill">{{ item.conteo }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Dispositivos por Zona</h5>
+                <ul class="list-group list-group-flush">
+                    {% for item in dispositivos_por_zona %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ item.nombre }}
+                            <span class="badge bg-primary rounded-pill">{{ item.conteo }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Alertas de la Semana</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-danger">Grave</span>
+                        <span class="badge bg-danger rounded-pill">{{ alertas_graves }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-warning">Alto</span>
+                        <span class="badge bg-warning text-dark rounded-pill">{{ alertas_altas }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-info">Mediano</span>
+                        <span class="badge bg-info text-dark rounded-pill">{{ alertas_medianas }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Últimas 10 Mediciones</h5>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Dispositivo</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for medicion in ultimas_mediciones %}
+                        <tr>
+                            <td>{{ medicion.fecha|date:"d M Y H:i:s" }}</td>
+                            <td>{{ medicion.dispositivo.nombre }}</td>
+                            <td>{{ medicion.consumo }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No hay mediciones recientes.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'listar_mediciones' %}" class="btn btn-primary float-end">Ver más mediciones</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
