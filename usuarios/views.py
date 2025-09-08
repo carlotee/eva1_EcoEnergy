@@ -7,5 +7,5 @@ def login(request):
 def registro(request):
     return render(request, 'usuarios/registro.html')
 
-def contraseña(request):
-    return render(request, 'usuarios/contraseña.html')
+def contrasena(request):
+    return render(request, 'usuarios/contrasena.html')
