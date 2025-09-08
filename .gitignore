@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 15999c8a5af297f7872bbe43a7e6f0f5fad87026
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -38,7 +42,14 @@ Thumbs.db
 
 # IDEs
 .idea/
+<<<<<<< HEAD
 
 __pycache__/
 *.pyc
 *.pyo
+=======
+__pycache__/
+*.pyc
+*.pyo
+
+>>>>>>> 15999c8a5af297f7872bbe43a7e6f0f5fad87026
