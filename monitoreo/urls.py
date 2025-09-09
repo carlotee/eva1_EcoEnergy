@@ -27,6 +27,7 @@ urlpatterns = [
     path('panel/', views.panel_dispositivos, name='panel_dispositivos'),
     path('dispositivos/crear/', views.crear_dispositivos, name='crear_dispositivos'),
     path('dispositivos/listar_dispositivos/', views.listar_dispositivos, name='listar_dispositivos'),
-    path('dispositivos/eliminar/<int:dispositivo_id>/', views.eliminar_dispositivo, name='eliminar_dispositivo')
+    path('dispositivos/eliminar/<int:dispositivo_id>/', views.eliminar_dispositivo, name='eliminar_dispositivo'),
+    path('dispositivos/alerta_semanal/', views.alerta_semanal_view, name='alerta_semanal'),
 
 ]
