@@ -3,6 +3,8 @@ from .models import Medicion
 from django.shortcuts import render, redirect
 from .forms import DispositivoForm
 from .models import Dispositivo
+from .models import Alerta
+from django.utils.timezone import now, timedelta
 # Create your views here.
 
 def inicio(request):
@@ -57,3 +59,16 @@ def eliminar_dispositivo(request, dispositivo_id):
         dispositivo.delete()
         return redirect('listar_dispositivos')
     return render(request, 'dispositivos/eliminar.html', {'dispositivo': dispositivo})
+
+
+def alerta_semanal_view(request):
+    fecha_fin = now()
+    fecha_inicio = fecha_fin - timedelta(days=7)
+
+    alertas_semana = Alerta.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).select_related('dispositivo', 'dispositivo__categoria', 'dispositivo__zona').order_by('-fecha')
+
+    context = {
+        'alertas_semana': alertas_semana,
+    }
+
+    return render(request, 'dispositivos/alerta_semanal.html', context)
