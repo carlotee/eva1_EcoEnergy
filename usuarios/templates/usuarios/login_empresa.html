@@ -114,8 +114,8 @@ p[style*="color: red;"] {
         <input type="password" name="password" required>
 
         <button type="submit">Iniciar Sesión</button>
-            <p>Si no tienes cuenta te podras registrar -->  <a href="{% url 'registro_empresa' %}">registrarse</a></p>
-            <p>Si Olvidaste tu contreña puedes seleccionar</p><a href="{% url 'contrasena' %}">Restablecer contraseña</a>
+            <p>No tienes cuenta <a href="{% url 'registro_empresa' %}">Registrate</a></p>
+            <a href="{% url 'contrasena' %}">¿Olvidaste tu contraseña?</a>
 
     </form>
 
