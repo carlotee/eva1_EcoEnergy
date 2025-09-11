@@ -20,6 +20,7 @@ def inicio(request):
     return render(request, "dispositivos/inicio.html", contexto)
 
 def panel_dispositivos(request):
+    print("Entrando al dashboard...")
     dispositivos_por_categoria = Categoria.objects.filter(
         estado="ACTIVO", deleted_at__isnull=True
     ).annotate(
