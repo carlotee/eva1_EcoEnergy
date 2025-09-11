@@ -6,6 +6,9 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from .forms import DispositivoForm
+from .models import Dispositivo
+from .models import Alerta
+from django.utils.timezone import now, timedelta
 from .models import Dispositivo, Categoria, Zona, Medicion, Alerta
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
@@ -13,7 +16,6 @@ from django.core.paginator import Paginator
 import json
 from django.db.models import Q
 
-# Create your views here.
 
 def inicio(request):
     contexto = {"nombre": "hombre araña"}
@@ -118,6 +120,20 @@ def eliminar_dispositivo(request, dispositivo_id):
         return redirect('listar_dispositivos')
     return render(request, 'dispositivos/eliminar.html', {'dispositivo': dispositivo})
 
+
+
+def alerta_semanal_view(request):
+    fecha_fin = now()
+    fecha_inicio = fecha_fin - timedelta(days=7)
+
+    alertas_semana = Alerta.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).select_related('dispositivo', 'dispositivo__categoria', 'dispositivo__zona').order_by('-fecha')
+
+    context = {
+        'alertas_semana': alertas_semana,
+    }
+
+    return render(request, 'dispositivos/alerta_semanal.html', context)
+
 def generar_y_enviar_alertas(request):
     mediciones_recientes = Medicion.objects.filter(fecha__date=date.today())
     
@@ -161,3 +177,4 @@ def listado_mediciones(request):
 def detalle_dispositivo(request, pk):
     dispositivo = get_object_or_404(Dispositivo, pk=pk)
     return render(request, 'dispositivos/detalle_dispositivo.html', {'dispositivo': dispositivo})
+
