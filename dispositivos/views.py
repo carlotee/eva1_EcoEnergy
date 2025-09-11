@@ -11,6 +11,7 @@ from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import json
+from django.db.models import Q
 
 # Create your views here.
 
@@ -19,35 +20,52 @@ def inicio(request):
     return render(request, "dispositivos/inicio.html", contexto)
 
 def panel_dispositivos(request):
-    dispositivos_por_categoria = Categoria.objects.annotate(conteo=Count('dispositivo'))
-    dispositivos_por_zona = Zona.objects.annotate(conteo=Count('dispositivo'))
+    dispositivos_por_categoria = Categoria.objects.filter(
+        estado="ACTIVO", deleted_at__isnull=True
+    ).annotate(
+        conteo=Count('dispositivo', filter=Q(dispositivo__estado='ACTIVO', dispositivo__deleted_at__isnull=True))
+    )
 
-    alertas_urgentes = Alerta.objects.filter(severidad='URGENTE').count()
-    alertas_medianas = Alerta.objects.filter(severidad='MEDIANA').count()
+    dispositivos_por_zona = Zona.objects.filter(
+        estado="ACTIVO", deleted_at__isnull=True
+    ).annotate(
+        conteo=Count('dispositivo', filter=Q(dispositivo__estado='ACTIVO', dispositivo__deleted_at__isnull=True))
+    )
 
-    ultimas_mediciones = Medicion.objects.order_by('-fecha')[:10]
+    alertas_urgentes = Alerta.objects.filter(severidad='grave', deleted_at__isnull=True).count()
+    alertas_medianas = Alerta.objects.filter(severidad='mediana', deleted_at__isnull=True).count()
+    alertas_bajas = Alerta.objects.filter(severidad='alta', deleted_at__isnull=True).count()
+
+    ultimas_mediciones = Medicion.objects.filter(deleted_at__isnull=True).order_by('-fecha')[:10]
 
     hoy = date.today()
     hace_7_dias = hoy - timedelta(days=7)
     hace_30_dias = hoy - timedelta(days=30)
 
-    consumo_diario = Medicion.objects.filter(fecha__date__gte=hace_7_dias)\
-        .annotate(dia=TruncDay('fecha'))\
-        .values('dia')\
-        .annotate(consumo_total=Sum('consumo'))\
-        .order_by('dia')
+    consumo_diario = Medicion.objects.filter(
+        fecha__date__gte=hace_7_dias,
+        deleted_at__isnull=True
+    ).annotate(
+        dia=TruncDay('fecha')
+    ).values('dia').annotate(
+        consumo_total=Sum('consumo')
+    ).order_by('dia')
 
-    consumo_semanal = Medicion.objects.filter(fecha__date__gte=hace_30_dias)\
-        .annotate(semana=TruncWeek('fecha'))\
-        .values('semana')\
-        .annotate(consumo_total=Sum('consumo'))\
-        .order_by('semana')
+    consumo_semanal = Medicion.objects.filter(
+        fecha__date__gte=hace_30_dias,
+        deleted_at__isnull=True
+    ).annotate(
+        semana=TruncWeek('fecha')
+    ).values('semana').annotate(
+        consumo_total=Sum('consumo')
+    ).order_by('semana')
 
     context = {
         "dispositivos_por_categoria": dispositivos_por_categoria,
         "dispositivos_por_zona": dispositivos_por_zona,
         "alertas_urgentes": alertas_urgentes,
         "alertas_medianas": alertas_medianas,
+        "alertas_bajas": alertas_bajas,
         "ultimas_mediciones": ultimas_mediciones,
         "consumo_diario_json": json.dumps(list(consumo_diario), default=str),
         "consumo_semanal_json": json.dumps(list(consumo_semanal), default=str),
