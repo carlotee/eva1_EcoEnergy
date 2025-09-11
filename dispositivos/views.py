@@ -14,11 +14,12 @@ from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import json
-from django.db.models import Q
+from django.db.models import Q ,Count, Sum
 from django.shortcuts import render
 from django.utils.timezone import now
 from datetime import timedelta
 from .models import Alerta
+from django.db.models.functions import TruncDay, TruncWeek
 
 def inicio(request):
     contexto = {"nombre": "hombre araña"}
