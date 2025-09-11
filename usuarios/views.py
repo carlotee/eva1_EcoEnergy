@@ -14,7 +14,7 @@ def contrasena(request):
 def registro_empresa(request):
     if request.method == 'GET' and 'nombre' in request.GET:
         # No guardamos nada, solo redirigimos
-        return redirect('inicio')  # Cambia 'inicio' por la URL que quieras
+        return redirect('panel_dispositivos')  # Cambia 'inicio' por la URL que quieras
 
     return render(request, 'usuarios/registro_empresa.html')
 
@@ -26,6 +26,6 @@ def login_empresa(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        return redirect('inicio') 
+        return redirect('panel_dispositivos') 
 
     return render(request, 'usuarios/login_empresa.html')
