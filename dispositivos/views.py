@@ -9,6 +9,7 @@ from .forms import DispositivoForm
 from .models import Dispositivo, Categoria, Zona, Medicion, Alerta
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -135,3 +136,15 @@ def generar_y_enviar_alertas(request):
                 fail_silently=False,
             )
     
+def listado_mediciones(request):
+    mediciones = Medicion.objects.select_related('dispositivo').order_by('-fecha')
+    paginador = Paginator(mediciones, 50)  # Máximo 50 por página
+
+    pagina_num = request.GET.get('page')
+    pagina_obj = paginador.get_page(pagina_num)
+
+    return render(request, 'dispositivos/mediciones.html', {'pagina_obj': pagina_obj})
+
+def detalle_dispositivo(request, pk):
+    dispositivo = get_object_or_404(Dispositivo, pk=pk)
+    return render(request, 'dispositivos/detalle_dispositivo.html', {'dispositivo': dispositivo})
