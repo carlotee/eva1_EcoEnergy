@@ -122,14 +122,14 @@ def eliminar_dispositivo(request, dispositivo_id):
 
 
 
-def alerta_semanal_view(request):
+def alerta_semanal(request):
     fecha_fin = now()
     fecha_inicio = fecha_fin - timedelta(days=7)
 
-    alertas_semana = Alerta.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).select_related('dispositivo', 'dispositivo__categoria', 'dispositivo__zona').order_by('-fecha')
+    alerta_semanal = Alerta.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).select_related('dispositivo', 'dispositivo__categoria', 'dispositivo__zona').order_by('-fecha')
 
     context = {
-        'alertas_semana': alertas_semana,
+        'alerta_semanal': alerta_semanal,
     }
 
     return render(request, 'dispositivos/alerta_semanal.html', context)
