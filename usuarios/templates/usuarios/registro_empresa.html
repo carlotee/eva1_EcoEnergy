@@ -31,18 +31,19 @@
         </style>
     <h1>Registro de Empresa</h1>
 
-    <form method="post">
-        <label>Nombre de la empresa:</label><br>
-        <input type="text" name="nombre"><br><br>
+<form method="get">
+    <label>Nombre de la empresa:</label><br>
+    <input type="text" name="nombre"><br><br>
 
-        <label>Correo electrónico:</label><br>
-        <input type="email" name="email"><br><br>
+    <label>Correo electrónico:</label><br>
+    <input type="email" name="email"><br><br>
 
-        <label>Contraseña:</label><br>
-        <input type="password" name="password"><br><br>
+    <label>Contraseña:</label><br>
+    <input type="password" name="password"><br><br>
 
-        <button type="submit">Registrarse</button>
-    </form>
+    <button type="submit">Registrarse</button>
+</form>
+
     <p>¿Ya estás registrado? <a href="{% url 'login_empresa' %}">Inicia sesion</a></p>
 </body>
 </html>
