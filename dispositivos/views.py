@@ -142,6 +142,20 @@ def alerta_semanal(request, dispositivo_id):
 
     return render(request, 'dispositivos/alerta_semanal.html', context)
 
+def alertas_todas(request):
+    fecha_fin = now()
+    fecha_inicio = fecha_fin - timedelta(days=7)
+
+    alertas = Alerta.objects.filter(
+        fecha__range=(fecha_inicio, fecha_fin)
+    ).select_related('dispositivo', 'dispositivo__categoria', 'dispositivo__zona').order_by('-fecha')
+
+    context = {
+        'alertas_semana': alertas,
+    }
+
+    return render(request, 'dispositivos/alerta_semanal.html', context)
+
 def generar_y_enviar_alertas(request):
     mediciones_recientes = Medicion.objects.filter(fecha__date=date.today())
     
