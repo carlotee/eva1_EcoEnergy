@@ -15,7 +15,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import json
 from django.db.models import Q
-
+from django.shortcuts import render
+from django.utils.timezone import now
+from datetime import timedelta
+from .models import Alerta
 
 def inicio(request):
     contexto = {"nombre": "hombre araña"}
@@ -122,14 +125,19 @@ def eliminar_dispositivo(request, dispositivo_id):
 
 
 
-def alerta_semanal(request):
+def alerta_semanal(request, dispositivo_id):
     fecha_fin = now()
     fecha_inicio = fecha_fin - timedelta(days=7)
 
-    alerta_semanal = Alerta.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).select_related('dispositivo', 'dispositivo__categoria', 'dispositivo__zona').order_by('-fecha')
+    alertas = Alerta.objects.filter(
+        dispositivo_id=dispositivo_id,
+        fecha__range=(fecha_inicio, fecha_fin)
+    ).select_related(
+        'dispositivo', 'dispositivo__categoria', 'dispositivo__zona'
+    ).order_by('-fecha')
 
     context = {
-        'alerta_semanal': alerta_semanal,
+        'alertas_semana': alertas,  # Este nombre debe coincidir con el usado en el template
     }
 
     return render(request, 'dispositivos/alerta_semanal.html', context)
