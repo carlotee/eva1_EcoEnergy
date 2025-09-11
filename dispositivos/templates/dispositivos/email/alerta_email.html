@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Alerta de Alto Consumo</title>
+</head>
+<body>
+    <h1>Alerta de Alto Consumo</h1>
+    <p>Se ha detectado un consumo inusualmente alto en uno de tus dispositivos.</p>
+    
+    <ul>
+        <li><strong>Dispositivo:</strong> {{ dispositivo.nombre }}</li>
+        <li><strong>Consumo registrado:</strong> {{ medicion.consumo }} kWh</li>
+        <li><strong>Consumo máximo permitido:</strong> {{ dispositivo.consumo_maximo }} kWh</li>
+        <li><strong>Fecha de la medición:</strong> {{ medicion.fecha|date:"d M Y H:i:s" }}</li>
+        <li><strong>Descripción de la alerta:</strong> {{ alerta.descripcion }}</li>
+    </ul>
+
+    <p>Te recomendamos revisar el estado de este dispositivo para evitar problemas.</p>
+    
+    <p>Gracias,</p>
+    <p>El equipo de Monitoreo de Dispositivos.</p>
+</body>
+</html>

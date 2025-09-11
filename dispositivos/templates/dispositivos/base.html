@@ -8,11 +8,15 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'listar_dispositivos' %}">Dispositivos</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <div class="navbar-nav">
+            <a class="nav-link active" href="{% url 'listar_dispositivos' %}">📟 Dispositivos</a>
+            <a class="nav-link active" href="{% url 'listado_mediciones' %}">📊 Mediciones</a>
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <!-- Contenido dinámico -->
     <div class="container mt-4">

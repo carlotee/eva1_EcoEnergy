@@ -50,9 +50,20 @@ class Medicion(BaseModel):
         return f"{self.dispositivo} - {self.consumo} kWh"
 
 class Alerta(BaseModel):
+    SEVERIDAD_GRAVE = 'grave'
+    SEVERIDAD_ALTA = 'alta'
+    SEVERIDAD_MEDIANA = 'mediana'
+
+    SEVERIDAD_CHOICES = [
+        (SEVERIDAD_GRAVE, 'Grave'),
+        (SEVERIDAD_ALTA, 'Alta'),
+        (SEVERIDAD_MEDIANA, 'Mediana'),
+    ]
+
     dispositivo = models.ForeignKey(Dispositivo, on_delete=models.CASCADE)
     mensaje = models.CharField(max_length=200)
     fecha = models.DateTimeField(auto_now_add=True)
+    severidad = models.CharField(max_length=10, choices=SEVERIDAD_CHOICES, default=SEVERIDAD_MEDIANA)
 
     def __str__(self):
-        return f"Alerta {self.dispositivo} - {self.mensaje}"
+        return f"Alerta {self.dispositivo} - {self.mensaje} - {self.severidad}"
