@@ -1,0 +1,30 @@
+{% extends "dispositivos/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Detalle del Dispositivo</h2>
+    <table class="table table-bordered mt-3">
+        <tr>
+            <th>Nombre:</th>
+            <td>{{ dispositivo.nombre }}</td>
+        </tr>
+        <tr>
+            <th>Categoría:</th>
+            <td>{{ dispositivo.categoria.nombre }}</td>
+        </tr>
+        <tr>
+            <th>Zona:</th>
+            <td>{{ dispositivo.zona.nombre }}</td>
+        </tr>
+        <tr>
+            <th>Consumo Máximo (W):</th>
+            <td>{{ dispositivo.consumo_maximo }}</td>
+        </tr>
+        <tr>
+            <th>Estado:</th>
+            <td>{{ dispositivo.estado }}</td>
+        </tr>
+    </table>
+    <a href="{% url 'listar_mediciones' %}" class="btn btn-secondary mt-2">Volver a Mediciones</a>
+</div>
+{% endblock %}

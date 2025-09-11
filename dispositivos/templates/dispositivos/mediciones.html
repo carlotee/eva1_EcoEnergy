@@ -1,0 +1,167 @@
+<!-- templates/mediciones.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Mediciones</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        margin: 0;
+        padding: 20px 0;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 700;
+        color: #222;
+    }
+
+    table {
+        width: 80%;
+        max-width: 900px;
+        margin: 0 auto 40px auto;
+        border-collapse: collapse;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    thead th {
+        background-color: #007bff;
+        color: #fff;
+        text-align: left;
+        padding: 12px 15px;
+        font-weight: 600;
+    }
+
+    tbody td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:hover {
+        background-color: #f1faff;
+        cursor: pointer;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.2s ease-in-out;
+    }
+
+    a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    .btn-detalle {
+        background-color: #007bff;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .btn-detalle:hover {
+        background-color: #0056b3;
+        color: white;
+    }
+
+    .pagination {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 16px;
+    }
+
+    .pagination a {
+        color: #007bff;
+        text-decoration: none;
+        margin: 0 8px;
+        padding: 6px 12px;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+
+    .pagination a:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .pagination span {
+        margin: 0 10px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    /* Para mensajes sin datos */
+    td[colspan="4"] {
+        text-align: center;
+        font-style: italic;
+        color: #777;
+        padding: 20px 0;
+    }
+</style>
+</head>
+<body>
+    <h1>Listado de Mediciones</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha/Hora</th>
+                <th>Consumo (kWh)</th>
+                <th>Dispositivo</th>
+                <th>Acciones</th>  <!-- Nueva columna -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicion in pagina_obj %}
+                <tr>
+                    <td>{{ medicion.fecha|date:"d M Y H:i:s" }}</td>
+                    <td>{{ medicion.consumo }}</td>
+                    <td>
+                        <a href="{% url 'detalle_dispositivo' medicion.dispositivo.id %}">
+                            {{ medicion.dispositivo.nombre }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'alertas_semanal' medicion.dispositivo.id %}" class="btn-detalle">Ver alertas</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No hay mediciones registradas.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if pagina_obj.has_previous %}
+            <a href="?page=1">&laquo; Primero</a>
+            <a href="?page={{ pagina_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span>Página {{ pagina_obj.number }} de {{ pagina_obj.paginator.num_pages }}</span>
+
+        {% if pagina_obj.has_next %}
+            <a href="?page={{ pagina_obj.next_page_number }}">Siguiente</a>
+            <a href="?page={{ pagina_obj.paginator.num_pages }}">Último &raquo;</a>
+        {% endif %}
+    </div>
+</body>
+</html>
