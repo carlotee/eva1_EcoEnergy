@@ -10,6 +10,7 @@ from .models import Dispositivo, Categoria, Zona, Medicion, Alerta
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+import json
 
 # Create your views here.
 
@@ -17,7 +18,6 @@ def inicio(request):
     contexto = {"nombre": "hombre araña"}
     return render(request, "dispositivos/inicio.html", contexto)
 
-@login_required
 def panel_dispositivos(request):
     dispositivos_por_categoria = Categoria.objects.annotate(conteo=Count('dispositivo'))
     dispositivos_por_zona = Zona.objects.annotate(conteo=Count('dispositivo'))
@@ -27,36 +27,33 @@ def panel_dispositivos(request):
 
     ultimas_mediciones = Medicion.objects.order_by('-fecha')[:10]
 
-    # Datos para la gráfica
     hoy = date.today()
     hace_7_dias = hoy - timedelta(days=7)
     hace_30_dias = hoy - timedelta(days=30)
-    
-    # Consumo diario
+
     consumo_diario = Medicion.objects.filter(fecha__date__gte=hace_7_dias)\
         .annotate(dia=TruncDay('fecha'))\
         .values('dia')\
         .annotate(consumo_total=Sum('consumo'))\
         .order_by('dia')
-    
-    # Consumo semanal
+
     consumo_semanal = Medicion.objects.filter(fecha__date__gte=hace_30_dias)\
         .annotate(semana=TruncWeek('fecha'))\
         .values('semana')\
         .annotate(consumo_total=Sum('consumo'))\
         .order_by('semana')
 
-    return render(request, "dispositivos/panel.html", {
+    context = {
         "dispositivos_por_categoria": dispositivos_por_categoria,
         "dispositivos_por_zona": dispositivos_por_zona,
         "alertas_urgentes": alertas_urgentes,
         "alertas_medianas": alertas_medianas,
         "ultimas_mediciones": ultimas_mediciones,
-        "consumo_diario_json": list(consumo_diario),
-        "consumo_semanal_json": list(consumo_semanal)
-    })
+        "consumo_diario_json": json.dumps(list(consumo_diario), default=str),
+        "consumo_semanal_json": json.dumps(list(consumo_semanal), default=str),
+    }
+    return render(request, "dispositivos/panel.html", context)
 
-@login_required
 def crear_dispositivos(request):
     if request.method == 'POST':
         form = DispositivoForm(request.POST)
@@ -68,7 +65,6 @@ def crear_dispositivos(request):
 
     return render(request, 'dispositivos/crear.html', {'form' : form})
 
-@login_required
 def listar_dispositivos(request):
     categoria_seleccionada = request.GET.get('categoria')
 
@@ -85,7 +81,6 @@ def listar_dispositivos(request):
         "categoria_seleccionada": int(categoria_seleccionada) if categoria_seleccionada else None
     })
 
-@login_required
 def editar_dispositivo(request, dispositivo_id):
     dispositivo = get_object_or_404(Dispositivo, id=dispositivo_id)
     if request.method == 'POST':
@@ -97,7 +92,6 @@ def editar_dispositivo(request, dispositivo_id):
         form = DispositivoForm(instance=dispositivo)
     return render(request, 'dispositivos/editar.html', {'form': form})
 
-@login_required
 def eliminar_dispositivo(request, dispositivo_id):
     dispositivo = get_object_or_404(Dispositivo, id=dispositivo_id)
     if request.method == 'POST':

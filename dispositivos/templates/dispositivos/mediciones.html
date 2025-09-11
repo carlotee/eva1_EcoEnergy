@@ -131,7 +131,7 @@
         <tbody>
             {% for medicion in pagina_obj %}
                 <tr>
-                    <td>{{ medicion.fecha }}</td>
+                    <td>{{ medicion.fecha|date:"d M Y H:i:s" }}</td>
                     <td>{{ medicion.consumo }}</td>
                     <td>
                         <a href="{% url 'detalle_dispositivo' medicion.dispositivo.id %}">
