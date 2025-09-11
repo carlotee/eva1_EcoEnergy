@@ -43,18 +43,14 @@
     <div class="col-md-4">
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">Alertas de la Semana</h5>
+                <h5 class="card-title">Alertas</h5>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="text-danger">Grave</span>
-                        <span class="badge bg-danger rounded-pill">{{ alertas_graves }}</span>
+                        Alertas Urgentes
+                        <span class="badge bg-danger text-light rounded-pill">{{ alertas_urgentes }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="text-warning">Alto</span>
-                        <span class="badge bg-warning text-dark rounded-pill">{{ alertas_altas }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="text-info">Mediano</span>
+                        Alertas Medianas
                         <span class="badge bg-info text-dark rounded-pill">{{ alertas_medianas }}</span>
                     </li>
                 </ul>
@@ -63,7 +59,33 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Gráfico de Consumo</h5>
+                <ul class="nav nav-tabs" id="consumoTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="diario-tab" data-bs-toggle="tab" href="#diario" role="tab" aria-controls="diario" aria-selected="true">Diario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="semanal-tab" data-bs-toggle="tab" href="#semanal" role="tab" aria-controls="semanal" aria-selected="false">Semanal</a>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="diario" role="tabpanel" aria-labelledby="diario-tab">
+                        <canvas id="dailyConsumptionChart"></canvas>
+                    </div>
+                    <div class="tab-pane fade" id="semanal" role="tabpanel" aria-labelledby="semanal-tab">
+                        <canvas id="weeklyConsumptionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
@@ -90,9 +112,70 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                
             </div>
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dailyData = {{ consumo_diario_json|safe }};
+        const weeklyData = {{ consumo_semanal_json|safe }};
+
+        const dailyLabels = dailyData.map(item => new Date(item.dia).toLocaleDateString());
+        const dailyValues = dailyData.map(item => item.consumo_total);
+
+        const weeklyLabels = weeklyData.map(item => `Semana del ${new Date(item.semana).toLocaleDateString()}`);
+        const weeklyValues = weeklyData.map(item => item.consumo_total);
+
+        const dailyCtx = document.getElementById('dailyConsumptionChart').getContext('2d');
+        const weeklyCtx = document.getElementById('weeklyConsumptionChart').getContext('2d');
+
+        new Chart(dailyCtx, {
+            type: 'line',
+            data: {
+                labels: dailyLabels,
+                datasets: [{
+                    label: 'Consumo Diario (kWh)',
+                    data: dailyValues,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(weeklyCtx, {
+            type: 'bar',
+            data: {
+                labels: weeklyLabels,
+                datasets: [{
+                    label: 'Consumo Semanal (kWh)',
+                    data: weeklyValues,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}
