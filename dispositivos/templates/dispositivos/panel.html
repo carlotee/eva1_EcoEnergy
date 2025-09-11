@@ -130,6 +130,10 @@
         const dailyData = {{ consumo_diario_json|safe }};
         const weeklyData = {{ consumo_semanal_json|safe }};
 
+        console.log('Datos diarios:', dailyData);
+        console.log('Datos semanales:', weeklyData);
+
+
         const dailyLabels = dailyData.map(item => new Date(item.dia).toLocaleDateString());
         const dailyValues = dailyData.map(item => item.consumo_total);
 
