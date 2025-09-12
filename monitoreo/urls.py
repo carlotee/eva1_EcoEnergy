@@ -37,4 +37,6 @@ urlpatterns = [
     path('mediciones/', views.listado_mediciones, name='listado_mediciones'),
     path('dispositivos/<int:pk>/', views.detalle_dispositivo, name='detalle_dispositivo'),
     path('dispositivos/alertas/', views.alertas_todas, name='alertas_todas'),
+    path('alerta/nueva/', views.crear_alerta, name='crear_alerta'),
+
     ]

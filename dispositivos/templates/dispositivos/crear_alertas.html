@@ -1,0 +1,19 @@
+{% extends 'dispositivos/base.html' %}
+
+{% block content %}
+  <h2>Crear Alerta</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar Alerta</button>
+  </form>
+
+  <a href="{% url 'listar_dispositivos' %}">Volver a dispositivos</a>
+{% endblock %}

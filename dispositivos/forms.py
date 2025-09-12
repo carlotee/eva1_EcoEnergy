@@ -1,5 +1,6 @@
 from django import forms
 from .models import Dispositivo
+from .models import Alerta
 
 class DispositivoForm(forms.ModelForm):
     class Meta:
@@ -21,3 +22,12 @@ class DispositivoForm(forms.ModelForm):
             raise forms.ValidationError('El nombre debe tener al menos 3 caracteres')
         
         return nombre
+    
+class AlertaForm(forms.ModelForm):
+    class Meta:
+        model = Alerta
+        fields = ['dispositivo', 'mensaje', 'severidad']
+        widgets = {
+            'mensaje': forms.Textarea(attrs={'rows': 2}),
+            'severidad': forms.Select(),
+        }

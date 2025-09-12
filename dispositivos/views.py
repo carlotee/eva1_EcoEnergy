@@ -20,7 +20,8 @@ from django.utils.timezone import now
 from datetime import timedelta
 from .models import Alerta
 from django.db.models.functions import TruncDay, TruncWeek
-
+from django.contrib import messages
+from .forms import AlertaForm
 def inicio(request):
     contexto = {"nombre": "hombre araña"}
     return render(request, "dispositivos/inicio.html", contexto)
@@ -201,3 +202,16 @@ def detalle_dispositivo(request, pk):
     dispositivo = get_object_or_404(Dispositivo, pk=pk)
     return render(request, 'dispositivos/detalle_dispositivo.html', {'dispositivo': dispositivo})
 
+
+def crear_alerta(request):
+    if request.method == 'POST':
+        form = AlertaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Alerta creada exitosamente.')
+            return redirect('listar_dispositivos')  # o donde quieras
+        else:
+            messages.error(request, 'Hubo un error al crear la alerta.')
+    else:
+        form = AlertaForm()
+    return render(request, 'dispositivos/crear_alertas.html', {'form': form})
